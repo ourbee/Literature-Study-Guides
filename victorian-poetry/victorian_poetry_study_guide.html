@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Giants of Victorian Poetry: A Teaching & Study Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        victorian: {
+                            gold: '#C5A059',
+                            darkGold: '#9A7B38',
+                            navy: '#0F172A',
+                            deepNavy: '#0A0F1D',
+                            crimson: '#881337',
+                            parchment: '#FDFBF7',
+                            slate: '#1E293B',
+                            lightSlate: '#F1F5F9',
+                            accent: '#2563EB',
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        body: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0F1D;
+            color: #F8FAFC;
+            overflow-x: hidden;
+        }
+        
+        .font-heading { fontFamily: 'Cinzel', serif; }
+        .font-serif-body { fontFamily: 'Lora', serif; }
+
+        .slide-card {
+            display: none;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .slide-card.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glassmorphism subtle effects */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-panel-gold {
+            background: rgba(197, 160, 89, 0.08);
+            border: 1px solid rgba(197, 160, 89, 0.25);
+        }
+
+        /* Printable styles */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                overflow: visible !important;
+            }
+            #app-header, #app-controls, #notes-panel, #grid-view-modal {
+                display: none !important;
+            }
+            .slide-card {
+                display: block !important;
+                opacity: 1 !important;
+                transform: none !important;
+                page-break-after: always;
+                background: white !important;
+                color: black !important;
+                border: 1px solid #ccc !important;
+                margin-bottom: 20px;
+                padding: 20px !important;
+                box-shadow: none !important;
+                height: auto !important;
+                min-height: 90vh;
+            }
+            .glass-panel, .glass-panel-gold {
+                background: #f9f9f9 !important;
+                color: black !important;
+                border: 1px solid #ddd !important;
+            }
+            .text-victorian-gold, .text-amber-400 {
+                color: #9A7B38 !important;
+            }
+            .text-slate-300, .text-slate-400 {
+                color: #333 !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between select-none">
+
+    <header id="app-header" class="w-full bg-victorian-slate/80 backdrop-filter backdrop-blur-md border-b border-slate-700/60 px-4 py-3 sticky top-0 z-40 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="bg-victorian-gold/20 p-2 rounded-lg border border-victorian-gold/40 text-victorian-gold">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <h1 class="font-heading font-bold text-sm md:text-base text-victorian-gold tracking-wide">THE GIANTS OF VICTORIAN POETRY</h1>
+                <p class="text-xs text-slate-400 hidden sm:block">A Comprehensive Teaching & Study Guide Deck</p>
+            </div>
+        </div>
+
+        <!-- Top Right Controls -->
+        <div class="flex items-center space-x-2 md:space-x-4">
+            <button onclick="toggleNotes()" id="notes-btn" title="Toggle Speaker Teaching Notes (N)" class="flex items-center space-x-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-md border border-slate-600 transition">
+                <i data-lucide="message-square" class="w-4 h-4 text-victorian-gold"></i>
+                <span class="hidden md:inline">Speaker Notes</span>
+            </button>
+            
+            <button onclick="openGridView()" title="View All Slides Grid" class="flex items-center space-x-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-md border border-slate-600 transition">
+                <i data-lucide="grid" class="w-4 h-4 text-victorian-gold"></i>
+                <span class="hidden md:inline">Grid Overview</span>
+            </button>
+
+            <button onclick="toggleFullscreen()" title="Toggle Fullscreen Mode (F)" class="text-slate-300 hover:text-white p-1.5 rounded-md hover:bg-slate-800">
+                <i data-lucide="maximize" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Top Progress Bar -->
+    <div class="w-full bg-slate-800 h-1 z-40">
+        <div id="progress-bar" class="bg-victorian-gold h-1 w-1/10 transition-all duration-300"></div>
+    </div>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-3 md:p-6 lg:p-8 max-w-7xl mx-auto w-full relative">
+
+        <!-- SLIDE 1: INTRODUCTION & SOCIO-LITERARY CONTEXT -->
+        <section id="slide-1" class="slide-card active flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-victorian-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex items-center justify-between mb-6">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 01 • Introduction & Context
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Victorian Era (1837–1901)</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-grow">
+                <div class="lg:col-span-7 space-y-5">
+                    <h2 class="text-3xl md:text-5xl font-heading font-bold text-white leading-tight">
+                        The Giants of <span class="text-victorian-gold italic">Victorian Poetry</span>
+                    </h2>
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed font-serif-body">
+                        The Victorian era was an epoch of unprecedented industrialization, empire expansion, scientific revelation, and profound spiritual anxiety. Victorian poets inherited the passionate individualism of the Romantics but redirected it toward social realism, psychological inquiry, and religious doubt.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="glass-panel-gold p-4 rounded-xl">
+                            <div class="flex items-center space-x-2 text-victorian-gold font-semibold mb-1">
+                                <i data-lucide="compass" class="w-4 h-4"></i>
+                                <span>Faith vs. Doubt</span>
+                            </div>
+                            <p class="text-xs text-slate-300">Darwinian evolution & scientific discoveries unsettled traditional Christian theology, creating deep existential angst.</p>
+                        </div>
+                        <div class="glass-panel-gold p-4 rounded-xl">
+                            <div class="flex items-center space-x-2 text-victorian-gold font-semibold mb-1">
+                                <i data-lucide="factory" class="w-4 h-4"></i>
+                                <span>Industrial & Social Progress</span>
+                            </div>
+                            <p class="text-xs text-slate-300">Poetry engaged with urban expansion, class struggle, gender roles, and imperial duty.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-victorian-deepNavy/80 p-6 rounded-2xl border border-slate-700/80 space-y-4">
+                    <h3 class="text-lg font-heading font-semibold text-victorian-gold border-b border-slate-700 pb-2 flex items-center justify-between">
+                        <span>Core Characteristics</span>
+                        <i data-lucide="sparkles" class="w-4 h-4 text-victorian-gold"></i>
+                    </h3>
+                    <ul class="space-y-3 text-xs md:text-sm text-slate-300">
+                        <li class="flex items-start space-x-3">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 mt-0.5 shrink-0"></i>
+                            <span><strong class="text-white">Dramatic Monologue:</strong> The definitive Victorian poetic form, probing human psychology through persona.</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 mt-0.5 shrink-0"></i>
+                            <span><strong class="text-white">Pictorial Detail:</strong> High visual intensity inspired by medievalism and the Pre-Raphaelite Brotherhood.</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 mt-0.5 shrink-0"></i>
+                            <span><strong class="text-white">Melodious Metrics & Innovation:</strong> Mastery of traditional meters alongside radical experiments (e.g., Sprung Rhythm).</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-2" class="slide-card flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 02 • Compressed Survey
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Female & Pre-Raphaelite Voices</span>
+            </div>
+
+            <h2 class="text-2xl md:text-4xl font-heading font-bold text-white mb-2">
+                Pioneering Female & <span class="text-victorian-gold">Pre-Raphaelite Giants</span>
+            </h2>
+            <p class="text-xs md:text-sm text-slate-300 font-serif-body mb-6">Redefining gender roles, sensuous symbolism, and religious devotion in 19th-century poetry.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
+                <!-- E.B. Browning -->
+                <div class="bg-victorian-deepNavy/90 p-6 rounded-xl border border-slate-700/80 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-heading font-bold text-amber-300">Elizabeth Barrett Browning</h3>
+                            <span class="text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">1806–1861</span>
+                        </div>
+                        <p class="text-xs text-slate-300 mb-4 leading-relaxed font-serif-body">
+                            One of the most venerated poets of her day, famed for her passionate love sonnets, political reform advocacy, and feminist epic.
+                        </p>
+                        <div class="space-y-2 text-xs text-slate-300">
+                            <div class="p-3 bg-slate-800/80 rounded-lg border border-slate-700">
+                                <strong class="text-victorian-gold block mb-1">Sonnets from the Portuguese (1850)</strong>
+                                <p class="italic font-serif-body text-slate-200">"How do I love thee? Let me count the ways..."</p>
+                                <p class="text-[11px] text-slate-400 mt-1">Transforms Petrarchan romantic conventions into a authentic expression of mature, spiritual love.</p>
+                            </div>
+                            <div class="p-3 bg-slate-800/80 rounded-lg border border-slate-700">
+                                <strong class="text-victorian-gold block mb-1">Aurora Leigh (1856)</strong>
+                                <p class="text-[11px] text-slate-300">A groundbreaking 9-book verse novel asserting a female writer's right to independence and artistic authority.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Christina Rossetti -->
+                <div class="bg-victorian-deepNavy/90 p-6 rounded-xl border border-slate-700/80 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-heading font-bold text-amber-300">Christina Rossetti</h3>
+                            <span class="text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">1830–1894</span>
+                        </div>
+                        <p class="text-xs text-slate-300 mb-4 leading-relaxed font-serif-body">
+                            Associated with the Pre-Raphaelite Brotherhood (PRB). Celebrated for lyrical perfection, vivid imagery, and spiritual complexity.
+                        </p>
+                        <div class="space-y-2 text-xs text-slate-300">
+                            <div class="p-3 bg-slate-800/80 rounded-lg border border-slate-700">
+                                <strong class="text-victorian-gold block mb-1">Goblin Market (1862)</strong>
+                                <p class="italic font-serif-body text-slate-200">"For there is no friend like a sister / In calm or stormy weather..."</p>
+                                <p class="text-[11px] text-slate-400 mt-1">A lush allegory exploring temptation, sisterly sacrifice, addiction, and female redemption.</p>
+                            </div>
+                            <div class="p-3 bg-slate-800/80 rounded-lg border border-slate-700">
+                                <strong class="text-victorian-gold block mb-1">"Remember" & Devotional Lyrics</strong>
+                                <p class="text-[11px] text-slate-300">Explores themes of mortality, renunciation, and quiet acceptance over despair.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-3" class="slide-card flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 03 • Giant 1 (Part 1/2)
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Alfred, Lord Tennyson (1809–1892)</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-grow">
+                <div class="lg:col-span-7 space-y-4">
+                    <h2 class="text-3xl md:text-5xl font-heading font-bold text-white">
+                        Alfred, Lord Tennyson
+                    </h2>
+                    <h3 class="text-lg font-serif-body text-victorian-gold italic">"The Voice of Victorian Britain"</h3>
+                    
+                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-serif-body">
+                        Appointed Poet Laureate in 1850 (succeeding Wordsworth), Tennyson served as the official poetic voice of the empire for over 42 years. His poetry captures both the grand optimism of Victorian progress and the dark undercurrents of doubt and melancholy.
+                    </p>
+
+                    <div class="space-y-3 pt-2">
+                        <div class="flex items-start space-x-3 p-3 bg-slate-800/60 rounded-lg border border-slate-700">
+                            <i data-lucide="music" class="w-5 h-5 text-victorian-gold shrink-0 mt-0.5"></i>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Melic Perfection & Cadence</h4>
+                                <p class="text-xs text-slate-300">Renowned for incomparable verbal melody, sound symbolism, and exquisite command of blank verse.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-3 bg-slate-800/60 rounded-lg border border-slate-700">
+                            <i data-lucide="feather" class="w-5 h-5 text-victorian-gold shrink-0 mt-0.5"></i>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Public Duty vs. Private Grief</h4>
+                                <p class="text-xs text-slate-300">Constantly mediated between his public role as Laureate and his internal struggle with mortality and loss.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-victorian-deepNavy/90 p-6 rounded-2xl border border-victorian-gold/30 space-y-4 shadow-xl">
+                    <div class="text-center pb-3 border-b border-slate-700">
+                        <span class="text-xs font-mono text-victorian-gold uppercase">Key Landmark Date</span>
+                        <h4 class="text-2xl font-heading font-bold text-white mt-1">1850</h4>
+                        <p class="text-xs text-slate-400">Publication of <em>In Memoriam</em> & Appointment as Poet Laureate</p>
+                    </div>
+
+                    <div class="p-4 bg-slate-900/90 rounded-xl border-l-4 border-victorian-gold">
+                        <p class="text-xs md:text-sm font-serif-body italic text-slate-200">
+                            "I hold it true, whate'er befall;<br>
+                            I feel it, when I sorrow most;<br>
+                            'Tis better to have loved and lost<br>
+                            Than never to have loved at all."
+                        </p>
+                        <p class="text-[11px] text-victorian-gold mt-2 font-mono text-right">— In Memoriam A.H.H. (Canto 27)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-4" class="slide-card flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 04 • Giant 1 (Part 2/2)
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Alfred, Lord Tennyson: Masterpieces</span>
+            </div>
+
+            <h2 class="text-2xl md:text-4xl font-heading font-bold text-white mb-2">
+                Tennyson's Core Masterpieces & Themes
+            </h2>
+            <p class="text-xs md:text-sm text-slate-300 font-serif-body mb-6">Examining Arthurian myth, heroic endurance, and grief turning into faith.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 flex-grow">
+                <!-- In Memoriam -->
+                <div class="bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-2 text-victorian-gold font-bold text-sm mb-2">
+                            <i data-lucide="heart-crack" class="w-4 h-4"></i>
+                            <span>In Memoriam A.H.H.</span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-serif-body leading-relaxed mb-3">
+                            A monumental 17-year elegy mourning his friend Arthur Henry Hallam. Explores "Nature, red in tooth and claw" versus spiritual hope.
+                        </p>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 text-[11px] text-slate-300">
+                        <strong class="text-amber-300 block">Teaching Point:</strong>
+                        Captures the exact trajectory from despairing doubt to eventual spiritual affirmation.
+                    </div>
+                </div>
+
+                <!-- Ulysses -->
+                <div class="bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-2 text-victorian-gold font-bold text-sm mb-2">
+                            <i data-lucide="anchor" class="w-4 h-4"></i>
+                            <span>Ulysses (1842)</span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-serif-body leading-relaxed mb-3">
+                            A classic dramatic monologue. The aging mythic king refuses idle retirement, embodying the restless Victorian drive for knowledge and conquest.
+                        </p>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 text-[11px] text-slate-300">
+                        <p class="italic text-slate-200">"To strive, to seek, to find, and not to yield."</p>
+                        <strong class="text-amber-300 block mt-1">Teaching Point:</strong> Symbol of Victorian heroic endurance.
+                    </div>
+                </div>
+
+                <!-- The Lady of Shalott -->
+                <div class="bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-2 text-victorian-gold font-bold text-sm mb-2">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                            <span>The Lady of Shalott</span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-serif-body leading-relaxed mb-3">
+                            An Arthurian ballad depicting an isolated woman weaving shadows. When she looks directly at real life (Lancelot), the curse strikes.
+                        </p>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 text-[11px] text-slate-300">
+                        <strong class="text-amber-300 block">Teaching Point:</strong> Allegory of the artist's tension between artistic isolation & active reality.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-5" class="slide-card flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 05 • Giant 2 (Part 1/2)
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Robert Browning (1812–1889)</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-grow">
+                <div class="lg:col-span-7 space-y-4">
+                    <h2 class="text-3xl md:text-5xl font-heading font-bold text-white">
+                        Robert Browning
+                    </h2>
+                    <h3 class="text-lg font-serif-body text-victorian-gold italic">"Master of Psychological Realism"</h3>
+                    
+                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-serif-body">
+                        Unlike Tennyson’s smooth, melodic lyricism, Robert Browning brought energetic speech rhythms, intellectual complexity, and psychological subtlety to Victorian verse. He revolutionized poetry by perfecting the <strong>Dramatic Monologue</strong>.
+                    </p>
+
+                    <div class="p-4 bg-victorian-deepNavy/80 rounded-xl border border-slate-700 space-y-2">
+                        <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider">The Anatomy of a Browning Dramatic Monologue</h4>
+                        <ol class="list-decimal list-inside text-xs text-slate-300 space-y-1">
+                            <li><strong>A Single Speaker:</strong> A fictional or historical character speaking at a critical moment.</li>
+                            <li><strong>A Silent Listener:</strong> Present in the scene, whose reactions are implied through the speaker's words.</li>
+                            <li><strong>Unintentional Revelation:</strong> The speaker reveals their true moral flaws, neuroses, or crimes inadvertently.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-victorian-deepNavy/90 p-6 rounded-2xl border border-victorian-gold/30 space-y-4 shadow-xl">
+                    <h3 class="text-base font-heading font-bold text-white border-b border-slate-700 pb-2">Stylistic Innovation</h3>
+                    <ul class="space-y-3 text-xs text-slate-300">
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="zap" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+                            <span><strong>Colloquial & Rugged Diction:</strong> Mimics natural, energetic human speech rather than formal poetic diction.</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="brain" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+                            <span><strong>Psychological Depth:</strong> Explores dark motives, jealousy, artistic passion, and moral vanity.</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="sun" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+                            <span><strong>Robust Optimism:</strong> Believed human imperfection is essential for spiritual growth ("A man's reach should exceed his grasp").</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-6" class="slide-card flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 06 • Giant 2 (Part 2/2)
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Robert Browning: Key Works</span>
+            </div>
+
+            <h2 class="text-2xl md:text-4xl font-heading font-bold text-white mb-2">
+                Browning's Dramatic Masterpieces
+            </h2>
+            <p class="text-xs md:text-sm text-slate-300 font-serif-body mb-6">Chilling portraits of tyranny, artistic freedom, and multi-perspective truth.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 flex-grow">
+                <!-- My Last Duchess -->
+                <div class="bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-2 text-victorian-gold font-bold text-sm mb-2">
+                            <i data-lucide="user-x" class="w-4 h-4"></i>
+                            <span>My Last Duchess (1842)</span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-serif-body leading-relaxed mb-3">
+                            The Duke of Ferrara shows a portrait of his late wife to an envoy, casually disclosing his possessive tyranny and implied murder:
+                        </p>
+                        <p class="italic text-[11px] text-amber-200 bg-slate-900/60 p-2 rounded border-l-2 border-amber-400">
+                            "I gave commands; / Then all smiles stopped together."
+                        </p>
+                    </div>
+                    <div class="mt-3 text-[11px] text-slate-400">
+                        <strong>Key Analysis:</strong> Critique of patriarchal dominance and objectification.
+                    </div>
+                </div>
+
+                <!-- Fra Lippo Lippi -->
+                <div class="bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-2 text-victorian-gold font-bold text-sm mb-2">
+                            <i data-lucide="palette" class="w-4 h-4"></i>
+                            <span>Fra Lippo Lippi (1855)</span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-serif-body leading-relaxed mb-3">
+                            A Renaissance painter-monk caught out late argues that art should glorify God by celebrating the realistic beauty of the physical flesh, not abstract dogma.
+                        </p>
+                    </div>
+                    <div class="mt-3 text-[11px] text-slate-400">
+                        <strong>Key Analysis:</strong> Defense of fleshly realism in spiritual art.
+                    </div>
+                </div>
+
+                <!-- The Ring and the Book -->
+                <div class="bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-2 text-victorian-gold font-bold text-sm mb-2">
+                            <i data-lucide="layers" class="w-4 h-4"></i>
+                            <span>The Ring and the Book (1868)</span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-serif-body leading-relaxed mb-3">
+                            A monumental 12-book epic retelling a 1698 Roman murder trial through twelve distinct monologues, showcasing the relativity of human truth.
+                        </p>
+                    </div>
+                    <div class="mt-3 text-[11px] text-slate-400">
+                        <strong>Key Analysis:</strong> Precursor to modernist multi-perspective narrative.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-7" class="slide-card flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 07 • Giant 3 (Part 1/2)
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Matthew Arnold (1822–1888)</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-grow">
+                <div class="lg:col-span-7 space-y-4">
+                    <h2 class="text-3xl md:text-5xl font-heading font-bold text-white">
+                        Matthew Arnold
+                    </h2>
+                    <h3 class="text-lg font-serif-body text-victorian-gold italic">"The Elegist & Cultural Critic"</h3>
+                    
+                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-serif-body">
+                        Matthew Arnold stood at the intellectual center of Victorian anxiety. Working as an Inspector of Schools and later Professor of Poetry at Oxford, Arnold viewed poetry as a crucial substitute for religion—a "criticism of life" needed to sustain human morality in a secularizing age.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        <div class="p-3 bg-slate-800/70 rounded-lg border border-slate-700">
+                            <strong class="text-xs text-amber-300 block mb-1">Elegiac Melancholy</strong>
+                            <p class="text-[11px] text-slate-300">Grieves the disappearance of classical harmony, calm, and traditional faith.</p>
+                        </div>
+                        <div class="p-3 bg-slate-800/70 rounded-lg border border-slate-700">
+                            <strong class="text-xs text-amber-300 block mb-1">Poetry as Moral Anchor</strong>
+                            <p class="text-[11px] text-slate-300">Believed culture and literature protect humanity from Victorian materialism and philistinism.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-victorian-deepNavy/90 p-6 rounded-2xl border border-victorian-gold/30 space-y-4">
+                    <h3 class="text-base font-heading font-bold text-white border-b border-slate-700 pb-2">Arnold's Philosophical Stance</h3>
+                    
+                    <div class="p-4 bg-slate-900/80 rounded-xl border-l-4 border-amber-400">
+                        <p class="text-xs font-serif-body italic text-slate-200">
+                            "Wandering between two worlds, one dead,<br>
+                            The other powerless to be born..."
+                        </p>
+                        <p class="text-[11px] text-victorian-gold mt-2 text-right font-mono">— Stanzas from the Grande Chartreuse</p>
+                    </div>
+
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        This famous quote defines Arnold's central condition: caught between an obsolete religious age and an unformed, chaotic modern era.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-8" class="slide-card flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 08 • Giant 3 (Part 2/2)
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Matthew Arnold: "Dover Beach"</span>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-heading font-bold text-white mb-2">
+                Deep Dive: <span class="text-victorian-gold">"Dover Beach" (1867)</span>
+            </h2>
+            <p class="text-xs md:text-sm text-slate-300 font-serif-body mb-4">The quintessential Victorian poem of spiritual loss and existential loneliness.</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center flex-grow">
+                <!-- Poem Excerpt -->
+                <div class="lg:col-span-6 bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 space-y-3">
+                    <div class="text-xs font-serif-body italic text-slate-200 space-y-2 leading-relaxed border-l-2 border-victorian-gold pl-4">
+                        <p>"The Sea of Faith<br>
+                        Was once, too, at the full, and round earth’s shore<br>
+                        Lay like the folds of a bright girdle furl’d.<br>
+                        But now I only hear<br>
+                        Its melancholy, long, withdrawing roar..."</p>
+                        <p class="pt-2">"Ah, love, let us be true<br>
+                        To one another! for the world...<br>
+                        Hath really neither joy, nor love, nor light...<br>
+                        And we are here as on a darkling plain<br>
+                        Swept with confused alarms of struggle and flight,<br>
+                        Where ignorant armies clash by night."</p>
+                    </div>
+                </div>
+
+                <!-- Analysis Cards -->
+                <div class="lg:col-span-6 space-y-3">
+                    <div class="p-4 bg-slate-800/80 rounded-xl border border-slate-700">
+                        <h4 class="text-xs font-bold text-victorian-gold mb-1 flex items-center space-x-2">
+                            <i data-lucide="waves" class="w-4 h-4"></i>
+                            <span>The "Sea of Faith" Metaphor</span>
+                        </h4>
+                        <p class="text-xs text-slate-300">The retreating tide on Dover's pebble beach symbolizes the gradual retreat of Christian faith in Victorian society.</p>
+                    </div>
+
+                    <div class="p-4 bg-slate-800/80 rounded-xl border border-slate-700">
+                        <h4 class="text-xs font-bold text-victorian-gold mb-1 flex items-center space-x-2">
+                            <i data-lucide="shield" class="w-4 h-4"></i>
+                            <span>Love as sole Refuge</span>
+                        </h4>
+                        <p class="text-xs text-slate-300">In a world devoid of spiritual certainty, personal love and human fidelity become the last remaining sanctuary.</p>
+                    </div>
+
+                    <div class="p-4 bg-slate-800/80 rounded-xl border border-slate-700">
+                        <h4 class="text-xs font-bold text-victorian-gold mb-1 flex items-center space-x-2">
+                            <i data-lucide="swords" class="w-4 h-4"></i>
+                            <span>"Darkling Plain" Imagery</span>
+                        </h4>
+                        <p class="text-xs text-slate-300">A haunting image of modern chaos—society stripped of moral light, plunging into blind conflict.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-9" class="slide-card flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 09 • Compressed Survey
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Late Victorian Innovators</span>
+            </div>
+
+            <h2 class="text-2xl md:text-4xl font-heading font-bold text-white mb-2">
+                Late Victorian <span class="text-victorian-gold">Innovators & Transition</span>
+            </h2>
+            <p class="text-xs md:text-sm text-slate-300 font-serif-body mb-6">Bridging High Victorian certitude to Modernist experimentation.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 flex-grow">
+                <!-- Gerard Manley Hopkins -->
+                <div class="bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-base font-heading font-bold text-amber-300">Gerard Manley Hopkins</h3>
+                            <span class="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded">1844–1889</span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-serif-body leading-relaxed mb-3">
+                            Jesuit priest whose radical metric innovations anticipated Modernism by decades.
+                        </p>
+                        <ul class="text-[11px] text-slate-300 space-y-1">
+                            <li>• <strong>Sprung Rhythm:</strong> Rhythm mimicking natural speech accent.</li>
+                            <li>• <strong>Inscape & Instress:</strong> The unique divine essence in all things.</li>
+                            <li>• <em>Works:</em> "The Windhover", "Pied Beauty".</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Swinburne & Aestheticism -->
+                <div class="bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-base font-heading font-bold text-amber-300">Algernon C. Swinburne</h3>
+                            <span class="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded">1837–1909</span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-serif-body leading-relaxed mb-3">
+                            Leader of the Decadent Movement and Aestheticism ("Art for Art's Sake").
+                        </p>
+                        <ul class="text-[11px] text-slate-300 space-y-1">
+                            <li>• Virtuosic, intoxicating meter and alliteration.</li>
+                            <li>• Challenged Victorian moralism with sensual themes.</li>
+                            <li>• <em>Works:</em> "Poems and Ballads" (1866).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Thomas Hardy -->
+                <div class="bg-victorian-deepNavy/90 p-5 rounded-xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-base font-heading font-bold text-amber-300">Thomas Hardy</h3>
+                            <span class="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded">1840–1928</span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-serif-body leading-relaxed mb-3">
+                            Bridged the fin-de-siècle into the 20th century with stark fatalism and cosmic irony.
+                        </p>
+                        <ul class="text-[11px] text-slate-300 space-y-1">
+                            <li>• Bereavement, regret, and indifferent nature.</li>
+                            <li>• Marked the demise of Victorian optimism.</li>
+                            <li>• <em>Works:</em> "The Darkling Thrush" (1900).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-10" class="slide-card flex-col w-full h-full min-h-[75vh] glass-panel rounded-2xl p-6 md:p-10 border border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-victorian-gold/10 text-victorian-gold border border-victorian-gold/30 uppercase tracking-widest">
+                    Slide 10 • Synthesis & Study Guide
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Comparative Review & Exam Prep</span>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-heading font-bold text-white mb-4">
+                Comparative Matrix & Key Exam Takeaways
+            </h2>
+
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full text-left text-xs text-slate-300 border-collapse">
+                    <thead>
+                        <tr class="bg-victorian-slate/80 text-victorian-gold border-b border-slate-600 font-heading">
+                            <th class="p-2.5">Poet</th>
+                            <th class="p-2.5">Primary Form / Technique</th>
+                            <th class="p-2.5">Attitude Toward Faith</th>
+                            <th class="p-2.5">Key Signature Work</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700/60 bg-victorian-deepNavy/60">
+                        <tr>
+                            <td class="p-2.5 font-bold text-white">Tennyson</td>
+                            <td class="p-2.5">Lyrical elegy, blank verse, cadence</td>
+                            <td class="p-2.5 text-amber-300">Troubled doubt yielding to hope</td>
+                            <td class="p-2.5 italic">In Memoriam A.H.H.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold text-white">R. Browning</td>
+                            <td class="p-2.5">Dramatic Monologue, grotesque detail</td>
+                            <td class="p-2.5 text-emerald-400">Robust, optimistic struggle</td>
+                            <td class="p-2.5 italic">My Last Duchess</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold text-white">M. Arnold</td>
+                            <td class="p-2.5">Elegiac verse, classical restraint</td>
+                            <td class="p-2.5 text-rose-400">Melancholy loss of belief</td>
+                            <td class="p-2.5 italic">Dover Beach</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold text-white">C. Rossetti</td>
+                            <td class="p-2.5">Sensuous lyric, PRB symbolism</td>
+                            <td class="p-2.5 text-sky-400">Deep Tractarian Anglo-Catholic devotion</td>
+                            <td class="p-2.5 italic">Goblin Market</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold text-white">Hopkins</td>
+                            <td class="p-2.5">Sprung rhythm, alliterative braid</td>
+                            <td class="p-2.5 text-amber-300">Passionate Jesuit nature-mysticism</td>
+                            <td class="p-2.5 italic">The Windhover</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                    <h4 class="font-bold text-victorian-gold mb-2 flex items-center space-x-1">
+                        <i data-lucide="help-circle" class="w-4 h-4"></i>
+                        <span>Sample Essay / Discussion Prompts</span>
+                    </h4>
+                    <ul class="list-disc list-inside space-y-1 text-slate-300">
+                        <li>How do Tennyson and Arnold differ in their response to Victorian religious doubt?</li>
+                        <li>Analyze how Browning uses the silent listener to reveal the speaker's flaws in his monologues.</li>
+                        <li>Examine the portrayal of female agency in Christina Rossetti and Elizabeth Barrett Browning.</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                    <h4 class="font-bold text-victorian-gold mb-2 flex items-center space-x-1">
+                        <i data-lucide="bookmark" class="w-4 h-4"></i>
+                        <span>Essential Literary Terms Glossary</span>
+                    </h4>
+                    <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-300">
+                        <div><strong class="text-white">Dramatic Monologue:</strong> Unintended self-revelation by a persona.</div>
+                        <div><strong class="text-white">Pre-Raphaelitism:</strong> Vivid medieval visual detail.</div>
+                        <div><strong class="text-white">Sprung Rhythm:</strong> Accentual verse meter by Hopkins.</div>
+                        <div><strong class="text-white">Higher Criticism:</strong> Scientific study of biblical texts.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="notes-panel" class="hidden w-full bg-victorian-slate border-t border-victorian-gold/30 p-4 transition-all duration-300 z-30">
+        <div class="max-w-7xl mx-auto flex items-start space-x-3">
+            <div class="bg-victorian-gold/20 p-2 rounded text-victorian-gold mt-1">
+                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-grow">
+                <div class="flex items-center justify-between mb-1">
+                    <h4 class="text-xs font-bold text-victorian-gold uppercase tracking-wider">Teacher Lecture Notes • <span id="notes-slide-title">Slide 1</span></h4>
+                    <button onclick="toggleNotes()" class="text-slate-400 hover:text-white text-xs">Close [N]</button>
+                </div>
+                <p id="notes-content" class="text-xs text-slate-300 font-serif-body leading-relaxed">
+                    Start by setting the historical backdrop. Remind students that Queen Victoria's reign (1837-1901) coincided with Darwin's Origin of Species (1859) and rapid industrial growth. Emphasize that Victorian poets did not turn away from societal problems like the Romantics sometimes did; instead, they directly engaged with science, faith, and industrialization.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer id="app-controls" class="w-full bg-victorian-slate/90 backdrop-filter backdrop-blur-md border-t border-slate-700/80 px-4 py-3 sticky bottom-0 z-40">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Left: Jump menu -->
+            <div class="flex items-center space-x-2">
+                <span class="text-xs text-slate-400 hidden sm:inline">Jump to:</span>
+                <select id="slide-select" onchange="goToSlide(parseInt(this.value))" class="bg-slate-800 text-xs text-slate-200 border border-slate-600 rounded-md px-2 py-1 focus:outline-none focus:border-victorian-gold">
+                    <option value="1">01. Intro & Context</option>
+                    <option value="2">02. Female & Pre-Raphaelite</option>
+                    <option value="3">03. Tennyson (1/2)</option>
+                    <option value="4">04. Tennyson (2/2)</option>
+                    <option value="5">05. Browning (1/2)</option>
+                    <option value="6">06. Browning (2/2)</option>
+                    <option value="7">07. Arnold (1/2)</option>
+                    <option value="8">08. Arnold (2/2)</option>
+                    <option value="9">09. Late Innovations</option>
+                    <option value="10">10. Comparative Matrix</option>
+                </select>
+            </div>
+
+            <!-- Center: Prev / Next Buttons & Counter -->
+            <div class="flex items-center space-x-3">
+                <button onclick="prevSlide()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-600 transition disabled:opacity-40" id="prev-btn">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                </button>
+                <span id="slide-indicator" class="text-xs font-mono font-bold text-victorian-gold px-2">
+                    Slide <span id="current-slide-num">1</span> of 10
+                </span>
+                <button onclick="nextSlide()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-600 transition disabled:opacity-40" id="next-btn">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Right: Print / Present options -->
+            <div class="flex items-center space-x-2">
+                <button onclick="window.print()" title="Print Presentation Deck or Export to PDF" class="text-xs text-slate-300 hover:text-white flex items-center space-x-1 px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-md border border-slate-600">
+                    <i data-lucide="printer" class="w-3.5 h-3.5 text-victorian-gold"></i>
+                    <span class="hidden md:inline">Print / PDF</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <div id="grid-view-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-lg z-50 hidden flex-col p-6 overflow-y-auto">
+        <div class="flex items-center justify-between mb-6 max-w-7xl mx-auto w-full">
+            <h3 class="text-xl font-heading font-bold text-victorian-gold">Slide Deck Grid Overview</h3>
+            <button onclick="closeGridView()" class="p-2 text-slate-400 hover:text-white bg-slate-800 rounded-lg">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl mx-auto w-full">
+            <!-- Grid cards generated dynamically -->
+            <template id="grid-card-template">
+                <div class="grid-card cursor-pointer bg-slate-900 border border-slate-700 hover:border-victorian-gold p-4 rounded-xl transition flex flex-col justify-between h-44">
+                    <div class="text-[10px] font-mono text-victorian-gold uppercase mb-1">Slide <span class="card-num"></span></div>
+                    <div class="text-xs font-bold text-white card-title line-clamp-2"></div>
+                    <p class="text-[11px] text-slate-400 card-desc line-clamp-3 font-serif-body mt-2"></p>
+                    <button class="mt-3 text-[10px] text-victorian-gold hover:underline text-left font-semibold">Select Slide &rarr;</button>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <script>
+        // Total count of slides
+        const TOTAL_SLIDES = 10;
+        let currentSlide = 1;
+
+        // Speaker Teaching Notes content for each slide
+        const speakerNotes = {
+            1: "Lecture Strategy: Introduce the 19th-century backdrop. Highlight how the Victorian Era was torn between industrial confidence and scientific/existential dread. Emphasize that 'Giants' refers to the poets who defined this cultural moment.",
+            2: "Lecture Strategy: Draw attention to female authorship and Pre-Raphaelitism. E.B. Browning's Aurora Leigh is crucial as a feminist landmark. Christina Rossetti's Goblin Market presents rich opportunities for literary interpretation (religious allegory vs. gender/market critique).",
+            3: "Lecture Strategy: Alfred, Lord Tennyson was the quintessential Victorian poet. Point out his role as Poet Laureate. Discuss how his exquisite meter and cadence voiced national sentiment during a tumultuous century.",
+            4: "Lecture Strategy: Focus on 'In Memoriam A.H.H.' Explain Canto 27 and the famous quote 'Better to have loved and lost'. Connect 'Ulysses' to Victorian imperial ambition and moral fortitude.",
+            5: "Lecture Strategy: Robert Browning is the master of psychological monologue. Ensure students understand the 3 components of a Dramatic Monologue: Speaker, Silent Listener, and Unintentional Self-Revelation.",
+            6: "Lecture Strategy: Walk through 'My Last Duchess'. Show how the Duke inadvertently admits to murdering his wife out of possessive vanity. Compare this with 'Fra Lippo Lippi''s celebration of physical realism in religious art.",
+            7: "Lecture Strategy: Introduce Matthew Arnold as both poet and critic. Explain his famous definition of poetry as 'a criticism of life'. Emphasize his diagnosis of modern spiritual loneliness.",
+            8: "Lecture Strategy: Unpack 'Dover Beach' line by line. Emphasize the sound motif of the grating pebbles representing the 'melancholy, long, withdrawing roar' of religious faith.",
+            9: "Lecture Strategy: Detail the late-Victorian transition. Hopkins introduced 'Sprung Rhythm' and 'Inscape'; Swinburne pushed 'Art for Art's Sake'; Hardy closed the century with dark existential realism.",
+            10: "Lecture Strategy: Use this slide for exam revision. Contrast Tennyson's melancholic faith with Browning's optimism and Arnold's existential resignation. Run through the sample discussion prompts."
+        };
+
+        const slideTitles = {
+            1: "Slide 01 • Introduction & Socio-Literary Context",
+            2: "Slide 02 • Female & Pre-Raphaelite Giants",
+            3: "Slide 03 • Tennyson: Voice of an Era",
+            4: "Slide 04 • Tennyson: Masterpieces & Themes",
+            5: "Slide 05 • Robert Browning: Dramatic Monologue",
+            6: "Slide 06 • Robert Browning: Key Masterpieces",
+            7: "Slide 07 • Matthew Arnold: Elegist & Critic",
+            8: "Slide 08 • Matthew Arnold: 'Dover Beach'",
+            9: "Slide 09 • Late Victorian Innovators",
+            10: "Slide 10 • Comparative Synthesis & Exam Guide"
+        };
+
+        // Initialize lucide icons
+        lucide.createIcons();
+
+        // Navigate to specific slide
+        function goToSlide(n) {
+            if (n < 1 || n > TOTAL_SLIDES) return;
+
+            // Hide active slide
+            const currentEl = document.getElementById(`slide-${currentSlide}`);
+            if (currentEl) currentEl.classList.remove('active');
+
+            // Set new current slide
+            currentSlide = n;
+
+            // Show new active slide
+            const newEl = document.getElementById(`slide-${currentSlide}`);
+            if (newEl) newEl.classList.add('active');
+
+            // Update UI Controls
+            document.getElementById('current-slide-num').innerText = currentSlide;
+            document.getElementById('slide-select').value = currentSlide;
+
+            // Update Progress Bar
+            const progressPct = (currentSlide / TOTAL_SLIDES) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPct}%`;
+
+            // Update prev/next button states
+            document.getElementById('prev-btn').disabled = (currentSlide === 1);
+            document.getElementById('next-btn').disabled = (currentSlide === TOTAL_SLIDES);
+
+            // Update speaker notes
+            document.getElementById('notes-slide-title').innerText = slideTitles[currentSlide] || `Slide ${currentSlide}`;
+            document.getElementById('notes-content').innerText = speakerNotes[currentSlide] || "No additional teaching notes for this slide.";
+
+            // Close grid view if open
+            closeGridView();
+        }
+
+        function nextSlide() {
+            if (currentSlide < TOTAL_SLIDES) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        // Toggle Speaker Notes Dock
+        function toggleNotes() {
+            const panel = document.getElementById('notes-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        // Grid View modal
+        function openGridView() {
+            const modal = document.getElementById('grid-view-modal');
+            const container = modal.querySelector('.grid');
+            
+            // Clear existing grid cards except template
+            container.querySelectorAll('.grid-card').forEach(c => c.remove());
+
+            // Build grid items
+            for (let i = 1; i <= TOTAL_SLIDES; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                if (!slide) continue;
+
+                const card = document.createElement('div');
+                card.className = `grid-card cursor-pointer bg-slate-900 border ${i === currentSlide ? 'border-victorian-gold ring-1 ring-victorian-gold' : 'border-slate-700 hover:border-slate-500'} p-4 rounded-xl transition flex flex-col justify-between h-40`;
+                card.onclick = () => goToSlide(i);
+
+                const title = slide.querySelector('h2')?.innerText || `Slide ${i}`;
+                const desc = slide.querySelector('p')?.innerText || '';
+
+                card.innerHTML = `
+                    <div>
+                        <div class="text-[10px] font-mono text-victorian-gold uppercase mb-1">Slide 0${i}</div>
+                        <div class="text-xs font-bold text-white line-clamp-2">${title}</div>
+                        <p class="text-[11px] text-slate-400 line-clamp-2 font-serif-body mt-1">${desc}</p>
+                    </div>
+                    <div class="text-[10px] text-victorian-gold font-semibold mt-2">Go to slide &rarr;</div>
+                `;
+                container.appendChild(card);
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeGridView() {
+            const modal = document.getElementById('grid-view-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Toggle Fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // Keyboard Shortcuts Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'n' || e.key === 'N') {
+                toggleNotes();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            } else if (e.key === 'Escape') {
+                closeGridView();
+            }
+        });
+
+        // Initialize presentation state on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            goToSlide(1);
+        });
+    </script>
+</body>
+</html>
