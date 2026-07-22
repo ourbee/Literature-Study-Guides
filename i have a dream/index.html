@@ -1,1 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teaching "I Have A Dream" - Dr. Martin Luther King Jr.</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',
+                            navy: '#1e293b',
+                            gold: '#d97706',
+                            goldLight: '#fef3c7',
+                            amber: '#f59e0b',
+                            accent: '#3b82f6',
+                            cardBg: '#1e293b',
+                            lightBg: '#f8fafc'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', Georgia, serif;
+        }
+        .slide-container {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d97706;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between select-none">
 
+    <!-- Top Header -->
+    <header class="w-full bg-slate-900/90 border-b border-slate-800 px-4 py-3 sticky top-0 z-50 backdrop-blur-md flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <span class="bg-amber-500/20 text-amber-400 p-2 rounded-lg border border-amber-500/30">
+                <i class="fa-solid font-bold fa-book-open text-lg"></i>
+            </span>
+            <div>
+                <h1 class="font-cinzel font-bold text-sm sm:text-base text-amber-400 leading-tight">I HAVE A DREAM</h1>
+                <p class="text-xs text-slate-400">Dr. Martin Luther King Jr. | CU AEC & Literature Teaching Module</p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2 sm:space-x-3">
+            <!-- Presenter Notes Toggle -->
+            <button id="toggleNotesBtn" onclick="toggleNotes()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 hover:text-white transition border border-slate-700 flex items-center gap-1.5" title="Toggle Teacher Notes">
+                <i class="fa-solid fa-note-sticky text-amber-400"></i>
+                <span class="hidden sm:inline">Teacher Notes</span>
+            </button>
+            
+            <!-- Grid Overview Button -->
+            <button onclick="toggleGridModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 hover:text-white transition border border-slate-700 flex items-center gap-1.5" title="Slide Overview Grid">
+                <i class="fa-solid fa-grip text-amber-400"></i>
+                <span class="hidden sm:inline">Slides</span>
+            </button>
+
+            <!-- Quiz Modal Button -->
+            <button onclick="toggleQuizModal()" class="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-xs text-white transition font-medium flex items-center gap-1.5 shadow-lg shadow-amber-600/20">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Practice Quiz</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Presentation Viewport -->
+    <main class="flex-grow flex items-center justify-center p-3 sm:p-6 md:p-8 relative overflow-hidden">
+        
+        <div id="slideViewport" class="w-full max-w-6xl aspect-[16/9] min-h-[520px] max-h-[80vh] glass-panel rounded-2xl shadow-2xl p-6 sm:p-10 flex flex-col justify-between relative overflow-hidden border border-slate-700/60">
+            
+            <!-- Ambient Background Accent Glow -->
+            <div class="absolute -top-32 -right-32 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-32 -left-32 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Slide Content Wrapper -->
+            <div id="slideContent" class="slide-container flex-grow flex flex-col justify-center">
+                <!-- Slide content rendered dynamically via JavaScript -->
+            </div>
+
+            <!-- Presenter / Teacher Notes Drawer -->
+            <div id="teacherNotesPanel" class="hidden absolute bottom-0 left-0 right-0 bg-slate-900/95 border-t-2 border-amber-500 p-4 sm:p-5 rounded-b-2xl shadow-2xl z-30 transition-all max-h-[45%] overflow-y-auto custom-scrollbar">
+                <div class="flex justify-between items-center mb-2 border-b border-slate-800 pb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-chalkboard-user"></i> Pedagogical Guide & Lecture Notes
+                    </span>
+                    <button onclick="toggleNotes()" class="text-slate-400 hover:text-white text-xs">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+                <p id="teacherNotesContent" class="text-sm text-slate-300 leading-relaxed font-sans">
+                    <!-- Dynamic teacher notes -->
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Presentation Control Bar -->
+    <footer class="w-full bg-slate-900/90 border-t border-slate-800 px-4 py-3 sticky bottom-0 z-40 backdrop-blur-md flex flex-col sm:flex-row justify-between items-center gap-3">
+        <!-- Progress Bar & Indicator -->
+        <div class="flex items-center space-x-3 w-full sm:w-auto">
+            <span id="slideCounter" class="font-cinzel text-sm font-bold text-amber-400 min-w-[70px]">
+                01 / 10
+            </span>
+            <div class="w-full sm:w-64 bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
+                <div id="progressBar" class="bg-gradient-to-r from-amber-500 to-amber-300 h-full w-[10%] transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- Audio Reading Tool -->
+        <div class="flex items-center space-x-2">
+            <button id="speechBtn" onclick="toggleSpeech()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs flex items-center gap-2 border border-slate-700 transition">
+                <i id="speechIcon" class="fa-solid fa-volume-high text-amber-400"></i>
+                <span id="speechText">Listen Key Quote</span>
+            </button>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex items-center space-x-2">
+            <button onclick="prevSlide()" id="prevBtn" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium transition border border-slate-700 flex items-center gap-2">
+                <i class="fa-solid fa-chevron-left"></i>
+                <span>Previous</span>
+            </button>
+            <button onclick="nextSlide()" id="nextBtn" class="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-semibold transition shadow-lg shadow-amber-600/30 flex items-center gap-2">
+                <span>Next</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </footer>
+
+    <!-- Slide Overview Modal -->
+    <div id="gridModal" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 sm:p-6">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-5xl max-h-[85vh] flex flex-col p-6 shadow-2xl overflow-hidden">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-cinzel font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-border-all"></i> Slide Index & Quick Navigation
+                </h3>
+                <button onclick="toggleGridModal()" class="text-slate-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div id="gridContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 overflow-y-auto p-2 custom-scrollbar">
+                <!-- Grid Cards populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Quiz Modal for University Examinations -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 sm:p-6">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl flex flex-col p-6 shadow-2xl overflow-hidden relative">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+                <div>
+                    <h3 class="text-lg font-cinzel font-bold text-amber-400">CU AEC Exam Practice Quiz</h3>
+                    <p class="text-xs text-slate-400">Test understanding of "I Have A Dream"</p>
+                </div>
+                <button onclick="toggleQuizModal()" class="text-slate-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div id="quizBody" class="space-y-4 py-2">
+                <!-- Dynamic Quiz Question -->
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center">
+                <span id="quizScoreTracker" class="text-xs text-slate-400 font-medium">Question 1 of 5</span>
+                <button id="quizNextBtn" onclick="nextQuizQuestion()" class="px-4 py-2 rounded-lg bg-amber-600 text-white text-xs font-semibold hover:bg-amber-500 transition">
+                    Next Question
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const slides = [
+            {
+                id: 1,
+                title: "I Have A Dream",
+                subtitle: "Dr. Martin Luther King Jr. — An Analytical Teaching Guide",
+                category: "University of Calcutta | AEC Semester 1 Course",
+                layout: "title",
+                content: `
+                    <div class="text-center max-w-3xl mx-auto space-y-6">
+                        <span class="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider">
+                            CU AEC 1 Compulsory English Syllabus
+                        </span>
+                        <h1 class="text-3xl sm:text-5xl font-cinzel font-extrabold gold-gradient-text leading-tight">
+                            "I HAVE A DREAM"
+                        </h1>
+                        <p class="text-lg sm:text-xl text-slate-300 font-medium italic">
+                            By Dr. Martin Luther King Jr.
+                        </p>
+                        <div class="h-0.5 w-24 bg-gradient-to-r from-amber-500 to-amber-300 mx-auto rounded-full my-4"></div>
+                        <p class="text-sm sm:text-base text-slate-400 leading-relaxed">
+                            Delivered on August 28, 1963, at the Lincoln Memorial, Washington D.C.<br>
+                            A Masterpiece of American Rhetoric, Civil Rights Advocacy, and Literary Oratory.
+                        </p>
+                        <div class="grid grid-cols-3 gap-3 pt-4 text-left">
+                            <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60">
+                                <span class="text-amber-400 text-xs font-bold block">GENRE</span>
+                                <span class="text-xs text-slate-300">Persuasive Oratory / Speech</span>
+                            </div>
+                            <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60">
+                                <span class="text-amber-400 text-xs font-bold block">CONTEXT</span>
+                                <span class="text-xs text-slate-300">March on Washington</span>
+                            </div>
+                            <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60">
+                                <span class="text-amber-400 text-xs font-bold block">KEY FOCUS</span>
+                                <span class="text-xs text-slate-300">Rhetoric & Equality</span>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "I have a dream that one day this nation will rise up and live out the true meaning of its creed: We hold these truths to be self-evident, that all men are created equal.",
+                teacherNotes: "Introduce the syllabus context: Dr. King's speech is prescribed in Calcutta University AEC-1 Compulsory English. Highlight the dual objective of studying this text: understanding the socio-historical civil rights struggle and analyzing rhetorical devices for language competency exams."
+            },
+            {
+                id: 2,
+                title: "Historical & Socio-Political Context",
+                subtitle: "The Backdrop of the Civil Rights Movement (1963)",
+                category: "Contextual Background",
+                layout: "standard",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <div class="space-y-4">
+                            <div class="bg-slate-800/80 p-4 rounded-xl border-l-4 border-amber-500">
+                                <h4 class="font-bold text-amber-400 text-sm mb-1">The March on Washington (Aug 28, 1963)</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Over 250,000 peaceful demonstrators gathered at the Lincoln Memorial demanding economic rights and civil freedom for African Americans.
+                                </p>
+                            </div>
+                            <div class="bg-slate-800/80 p-4 rounded-xl border-l-4 border-blue-500">
+                                <h4 class="font-bold text-blue-400 text-sm mb-1">Jim Crow Laws & Segregation</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Systemic racial segregation in the American South enforced 'separate but equal' status, denying Black citizens fundamental vote, housing, and civil rights.
+                                </p>
+                            </div>
+                            <div class="bg-slate-800/80 p-4 rounded-xl border-l-4 border-emerald-500">
+                                <h4 class="font-bold text-emerald-400 text-sm mb-1">100 Years Post-Emancipation Proclamation</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Signed by Abraham Lincoln in 1863; MLK points out that 100 years later, Black Americans were still 'not free' due to manacles of segregation.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-700 space-y-3">
+                            <h4 class="font-cinzel text-amber-400 font-bold text-base border-b border-slate-800 pb-2">
+                                <i class="fa-solid fa-landmark mr-2"></i> Key Historical Milestones
+                            </h4>
+                            <ul class="space-y-2.5 text-xs text-slate-300">
+                                <li class="flex items-start gap-2">
+                                    <span class="bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded text-[10px] font-bold">1863</span>
+                                    <span>Abraham Lincoln signs Emancipation Proclamation.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded text-[10px] font-bold">1955</span>
+                                    <span>Montgomery Bus Boycott led by MLK Jr.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded text-[10px] font-bold">1963</span>
+                                    <span>March on Washington for Jobs and Freedom.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded text-[10px] font-bold">1964</span>
+                                    <span>Civil Rights Act passed; MLK wins Nobel Peace Prize.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "Five score years ago, a great American, in whose symbolic shadow we stand today, signed the Emancipation Proclamation.",
+                teacherNotes: "Explain the location significance: MLK stood before the Lincoln Memorial. Mention 'Five score years ago' is a direct homage to Abraham Lincoln's Gettysburg Address ('Four score and seven years ago'). Discuss the concept of a 'score' (20 years)."
+            },
+            {
+                id: 3,
+                title: "Speaker Profile & Non-Violent Philosophy",
+                subtitle: "Dr. Martin Luther King Jr. (1929 – 1968)",
+                category: "Author & Philosophy",
+                layout: "standard",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 flex flex-col justify-between text-center md:text-left">
+                            <div>
+                                <div class="w-14 h-14 bg-amber-500/20 rounded-full flex items-center justify-center text-amber-400 text-2xl mb-3 mx-auto md:mx-0 border border-amber-500/30">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-base">Baptist Minister & Leader</h4>
+                                <p class="text-xs text-slate-400 mt-1">SCLC President & Orator</p>
+                            </div>
+                            <p class="text-xs text-slate-300 mt-4 leading-relaxed">
+                                Applied Christian theology and Gandhian non-violence (Satyagraha) to lead the American Civil Rights Movement.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 flex flex-col justify-between text-center md:text-left">
+                            <div>
+                                <div class="w-14 h-14 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 text-2xl mb-3 mx-auto md:mx-0 border border-blue-500/30">
+                                    <i class="fa-solid fa-hand-fist"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-base">Non-Violent Resistance</h4>
+                                <p class="text-xs text-slate-400 mt-1">Moral Higher Ground</p>
+                            </div>
+                            <p class="text-xs text-slate-300 mt-4 leading-relaxed">
+                                King explicitly warned against physical violence or hatred toward white citizens, advocating dignified discipline.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 flex flex-col justify-between text-center md:text-left">
+                            <div>
+                                <div class="w-14 h-14 bg-emerald-500/20 rounded-full flex items-center justify-center text-emerald-400 text-2xl mb-3 mx-auto md:mx-0 border border-emerald-500/30">
+                                    <i class="fa-solid fa-scale-balanced"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-base">Constitutional Faith</h4>
+                                <p class="text-xs text-slate-400 mt-1">Inclusivity & Integration</p>
+                            </div>
+                            <p class="text-xs text-slate-300 mt-4 leading-relaxed">
+                                Refused black separatism; emphasized that Black freedom was inextricably bound to the freedom of all Americans.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "We must forever conduct our struggle on the high plane of dignity and discipline. We must not allow our creative protest to degenerate into physical violence.",
+                teacherNotes: "Emphasize MLK's influence by Mahatma Gandhi's principle of non-violence (Ahimsa). Point out the quote in the speech: 'We cannot walk alone.' MLK sought interracial unity, acknowledging many white allies present at the march."
+            },
+            {
+                id: 4,
+                title: "Core Themes of the Speech",
+                subtitle: "Major Thematic Pillars for Literary Analysis",
+                category: "Thematic Structure",
+                layout: "standard",
+                content: `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 hover:border-amber-500/50 transition">
+                            <h4 class="font-bold text-amber-400 text-sm flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-burst"></i> 1. Freedom & Equality
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Demands full citizenship rights, ending police brutality, voter suppression, and economic marginalization of Black citizens.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 hover:border-amber-500/50 transition">
+                            <h4 class="font-bold text-amber-400 text-sm flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-scroll"></i> 2. The Unfulfilled Promise
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Frames the U.S. Constitution & Declaration of Independence as a 'promissory note' that America defaulted on regarding citizens of color.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 hover:border-amber-500/50 transition">
+                            <h4 class="font-bold text-amber-400 text-sm flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-hourglass-half"></i> 3. The Fierce Urgency of Now
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Rejects 'gradualism' or waiting for slow political change. Urges immediate, decisive civil rights legislation.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 hover:border-amber-500/50 transition">
+                            <h4 class="font-bold text-amber-400 text-sm flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-dove"></i> 4. Brotherhood & Hope
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Envisions a redeemed America where character, not skin color, determines a human being's worth and dignity.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "Now is the time to make real the promises of democracy. Now is the time to rise from the dark and desolate valley of segregation to the sunlit path of racial justice.",
+                teacherNotes: "In CU examinations, questions often focus on the key themes: 'The Promissory Note', 'Fierce urgency of now', and 'Dream rooted in American Dream'. Ensure students memorize these core concepts."
+            },
+            {
+                id: 5,
+                title: "Rhetorical Devices: Anaphora & Repetition",
+                subtitle: "Linguistic Craftsmanship in MLK's Oratory",
+                category: "Literary Analysis",
+                layout: "standard",
+                content: `
+                    <div class="space-y-4">
+                        <div class="bg-slate-900/90 p-3.5 rounded-xl border border-amber-500/30">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-amber-400 font-bold text-xs uppercase tracking-wider">Definition</span>
+                                <span class="bg-amber-500/20 text-amber-300 text-[10px] px-2 py-0.5 rounded">Rhetoric Concept</span>
+                            </div>
+                            <p class="text-xs text-slate-200">
+                                <strong class="text-white">Anaphora:</strong> The deliberate repetition of a phrase at the beginning of successive sentences or clauses to build emotional resonance and rhythm.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                                <span class="text-amber-400 font-bold text-xs block mb-1">"One hundred years later..."</span>
+                                <p class="text-[11px] text-slate-300 leading-snug">
+                                    Repeated 4 times near the start to emphasize century-long stagnation after emancipation.
+                                </p>
+                            </div>
+                            <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                                <span class="text-amber-400 font-bold text-xs block mb-1">"Now is the time..."</span>
+                                <p class="text-[11px] text-slate-300 leading-snug">
+                                    Repeated 4 times to create an intense sense of urgency and demand immediate action.
+                                </p>
+                            </div>
+                            <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                                <span class="text-amber-400 font-bold text-xs block mb-1">"I have a dream..."</span>
+                                <p class="text-[11px] text-slate-300 leading-snug">
+                                    Repeated 8 times, transforming the speech into a prophetic vision of freedom.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 flex justify-between items-center text-xs">
+                            <span class="text-slate-300 font-medium">Other Repeated Refrains:</span>
+                            <span class="text-amber-400 font-semibold">"We can never be satisfied" &bull; "Let freedom ring"</span>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "I have a dream that one day... I have a dream that my four little children will one day live in a nation where they will not be judged by the color of their skin but by the content of their character.",
+                teacherNotes: "Anaphora is a favorite short-answer exam topic. Explain how anaphora creates a musical cadence (influenced by African-American gospel sermon tradition) that kept listeners engaged across a massive crowd."
+            },
+            {
+                id: 6,
+                title: "Rhetorical Devices: Metaphors & Vivid Imagery",
+                subtitle: "Transforming Abstract Ideas into Visual Realities",
+                category: "Literary Analysis",
+                layout: "standard",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 space-y-2">
+                            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block">Financial & Banking Metaphor</span>
+                            <h4 class="text-sm font-bold text-white">"A Bad Check" / "Promissory Note"</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                King compares the founding documents to a cheque. America gave Black citizens a <em>"bad check... marked insufficient funds"</em>, but he refuses to believe the <em>"bank of justice is bankrupt."</em>
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 space-y-2">
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider block">Geographical & Nature Imagery</span>
+                            <h4 class="text-sm font-bold text-white">"Island of Poverty" vs. "Ocean of Prosperity"</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Contrasts the Black American experience as a lonely island in the midst of a vast ocean of material wealth, highlighting economic inequality.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 space-y-2">
+                            <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">Light & Dark Contrast</span>
+                            <h4 class="text-sm font-bold text-white">"Joyous Daybreak" ending "Long Night"</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Segregation is depicted as a <em>"dark and desolate valley"</em>, while justice is a <em>"sunlit path"</em> and <em>"bright day of racial justice."</em>
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 space-y-2">
+                            <span class="text-xs font-bold text-purple-400 uppercase tracking-wider block">Architectural Metaphor</span>
+                            <h4 class="text-sm font-bold text-white">"Oasis of Freedom"</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Envisions transforming the stifling <em>"desert state of Mississippi"</em> into a fertile <em>"oasis of freedom and justice."</em>
+                            </p>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "America has given the Negro people a bad check, a check which has come back marked 'insufficient funds.' But we refuse to believe that the bank of justice is bankrupt.",
+                teacherNotes: "Explain why King used financial metaphors: money/cheques are universally understood by common citizens, making abstract constitutional rights concrete and undeniable."
+            },
+            {
+                id: 7,
+                title: "Allusions & Intertextuality",
+                subtitle: "Connecting the Speech to Historic Texts & Scriptures",
+                category: "Literary Analysis",
+                layout: "standard",
+                content: `
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                                <div class="text-amber-400 text-base mb-1"><i class="fa-solid fa-book-bible"></i></div>
+                                <h4 class="font-bold text-white text-xs">Biblical Allusions</h4>
+                                <p class="text-[11px] text-slate-300 mt-1 leading-snug">
+                                    Quotes Prophet Amos: <em>"Let justice roll down like waters and righteousness like a mighty stream"</em> and Isaiah 40:4.
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                                <div class="text-blue-400 text-base mb-1"><i class="fa-solid fa-flag-usa"></i></div>
+                                <h4 class="font-bold text-white text-xs">American Patriotic Texts</h4>
+                                <p class="text-[11px] text-slate-300 mt-1 leading-snug">
+                                    Quotes Declaration of Independence (<em>"Unalienable rights of life, liberty..."</em>) and patriotic anthem <em>"My Country 'Tis of Thee"</em>.
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                                <div class="text-emerald-400 text-base mb-1"><i class="fa-solid fa-feather"></i></div>
+                                <h4 class="font-bold text-white text-xs">Literary & Musical References</h4>
+                                <p class="text-[11px] text-slate-300 mt-1 leading-snug">
+                                    References Shakespeare's <em>Richard III</em> (<em>"discontent"</em>) and ends with the spiritual song <em>"Free at last!"</em>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800">
+                            <h4 class="font-cinzel text-amber-400 text-xs font-bold mb-1">Significance of Allusions</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                By weaving together American democratic ideals and Judeo-Christian theology, King positioned the Civil Rights movement not as a radical threat, but as the fulfillment of traditional American values.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "Free at last! Free at last! Thank God Almighty, we are free at last!",
+                teacherNotes: "Ask students why MLK ends with an old Negro Spiritual ('Free at last!'). It connects the contemporary struggle back to the historic lived experience and spiritual resilience of enslaved ancestors."
+            },
+            {
+                id: 8,
+                title: "Structural Development & Tone Shift",
+                subtitle: "How the Speech Evolves from Historical Reality to Prophetic Vision",
+                category: "Structural Analysis",
+                layout: "standard",
+                content: `
+                    <div class="space-y-3">
+                        <!-- Part 1 -->
+                        <div class="flex items-start gap-3 bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                            <span class="bg-amber-500 text-slate-950 font-bold px-2.5 py-1 rounded-lg text-xs mt-0.5">Part I</span>
+                            <div>
+                                <h4 class="font-bold text-amber-400 text-xs">The Historical Grievance & Broken Promise</h4>
+                                <p class="text-[11px] text-slate-300 leading-snug">
+                                    Somber, urgent tone. Focuses on the Emancipation Proclamation, 100 years of unfulfilled freedom, and the 'bad check'.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Part 2 -->
+                        <div class="flex items-start gap-3 bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                            <span class="bg-blue-500 text-white font-bold px-2.5 py-1 rounded-lg text-xs mt-0.5">Part II</span>
+                            <div>
+                                <h4 class="font-bold text-blue-400 text-xs">Call to Action & Moral Guidelines</h4>
+                                <p class="text-[11px] text-slate-300 leading-snug">
+                                    Firm, disciplined tone. Urges activists to continue protesting without bitterness, violence, or racial hatred.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Part 3 -->
+                        <div class="flex items-start gap-3 bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                            <span class="bg-emerald-500 text-slate-950 font-bold px-2.5 py-1 rounded-lg text-xs mt-0.5">Part III</span>
+                            <div>
+                                <h4 class="font-bold text-emerald-400 text-xs">The Vision / The Dream (Spontaneous Oratory)</h4>
+                                <p class="text-[11px] text-slate-300 leading-snug">
+                                    Triumphant, poetic, and sermon-like tone. Prompted by gospel singer Mahalia Jackson shouting <em>"Tell 'em about the dream, Martin!"</em>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-lg text-center">
+                            <span class="text-xs text-amber-300 font-medium">Tone Shift: Realistic Assessment of Injustice &rarr; Prophetic & Universal Hope</span>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "Go back to Mississippi, go back to Alabama... knowing that somehow this situation can and will be changed. Let us not wallow in the valley of despair.",
+                teacherNotes: "Highlight the famous historical fact: MLK departed from his prepared manuscript during the second half of the speech after gospel legend Mahalia Jackson called out from behind him."
+            },
+            {
+                id: 9,
+                title: "Key Textual Excerpts for Examination",
+                subtitle: "Passages Commonly Cited in CU AEC Examinations",
+                category: "Textual Analysis",
+                layout: "standard",
+                content: `
+                    <div class="grid grid-cols-1 gap-3">
+                        <div class="bg-slate-800/90 p-3.5 rounded-xl border-l-4 border-amber-500 space-y-1">
+                            <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">Excerpt 1 — Character over Color</span>
+                            <blockquote class="text-xs text-slate-200 italic">
+                                "I have a dream that my four little children will one day live in a nation where they will not be judged by the color of their skin but by the content of their character."
+                            </blockquote>
+                            <p class="text-[11px] text-slate-400"><strong>Exam Relevance:</strong> Summarizes King's vision of a color-blind meritocracy and human dignity.</p>
+                        </div>
+
+                        <div class="bg-slate-800/90 p-3.5 rounded-xl border-l-4 border-blue-500 space-y-1">
+                            <span class="text-[10px] uppercase font-bold text-blue-400 tracking-wider">Excerpt 2 — Universal Brotherhood</span>
+                            <blockquote class="text-xs text-slate-200 italic">
+                                "...sons of former slaves and the sons of former slave owners will be able to sit down together at the table of brotherhood."
+                            </blockquote>
+                            <p class="text-[11px] text-slate-400"><strong>Exam Relevance:</strong> Symbolizes reconciliation between historically antagonistic groups in Georgia.</p>
+                        </div>
+
+                        <div class="bg-slate-800/90 p-3.5 rounded-xl border-l-4 border-emerald-500 space-y-1">
+                            <span class="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">Excerpt 3 — The Symphony of Brotherhood</span>
+                            <blockquote class="text-xs text-slate-200 italic">
+                                "With this faith we will be able to transform the jangling discords of our nation into a beautiful symphony of brotherhood."
+                            </blockquote>
+                            <p class="text-[11px] text-slate-400"><strong>Exam Relevance:</strong> Auditory metaphor contrasting discord (racism) with symphony (harmony).</p>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "With this faith we will be able to transform the jangling discords of our nation into a beautiful symphony of brotherhood.",
+                teacherNotes: "In CU AEC exam MCQs/Short answers, students are frequently asked to identify figures of speech in these exact quotes (e.g. 'symphony of brotherhood' = auditory metaphor)."
+            },
+            {
+                id: 10,
+                title: "Classroom Discussion & Exam Review",
+                subtitle: "Key Questions for Calcutta University AEC Students",
+                category: "Review & Discussion",
+                layout: "standard",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 space-y-2">
+                            <h4 class="font-bold text-amber-400 text-xs uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-circle-question"></i> Short Answer & Essay Prompts
+                            </h4>
+                            <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                                <li>Explain the significance of the phrase "bad check" in MLK's speech.</li>
+                                <li>Discuss how MLK uses anaphora to build emotional impact.</li>
+                                <li>What is MLK's attitude towards non-violence and white allies?</li>
+                                <li>How does the speech ground itself in both religion and patriotism?</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 space-y-2">
+                            <h4 class="font-bold text-amber-400 text-xs uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-list-check"></i> Model MCQ Review Points
+                            </h4>
+                            <ul class="text-xs text-slate-300 space-y-2 leading-relaxed">
+                                <li class="bg-slate-900/60 p-2 rounded border border-slate-800">
+                                    <strong class="text-white">Q: Where was the speech delivered?</strong><br>
+                                    <span class="text-amber-300">A: Lincoln Memorial, Washington D.C. (1963)</span>
+                                </li>
+                                <li class="bg-slate-900/60 p-2 rounded border border-slate-800">
+                                    <strong class="text-white">Q: "Five score years ago" refers to what document?</strong><br>
+                                    <span class="text-amber-300">A: The Emancipation Proclamation (1863)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                `,
+                speechQuote: "Let freedom ring from the snowcapped Rockies of Colorado... Let freedom ring from every hill and molehill of Mississippi.",
+                teacherNotes: "Conclude the presentation by encouraging students to test their knowledge using the embedded 'Practice Quiz' button in the top navigation bar."
+            }
+        ];
+
+        const quizQuestions = [
+            {
+                question: "In what year and at which location was the speech 'I Have A Dream' delivered?",
+                options: [
+                    "1955 at the Montgomery Bus Terminal",
+                    "1963 at the Lincoln Memorial, Washington D.C.",
+                    "1968 at the Atlanta Baptist Church",
+                    "1964 at the White House Oval Office"
+                ],
+                correct: 1,
+                explanation: "Dr. King delivered the speech on August 28, 1963, standing on the steps of the Lincoln Memorial in Washington D.C."
+            },
+            {
+                question: "What metaphor does Dr. King use to describe America's unfulfilled promises to Black citizens?",
+                options: [
+                    "A broken shield",
+                    "A bad check marked 'insufficient funds'",
+                    "A withered tree in a desert",
+                    "A closed door of opportunity"
+                ],
+                correct: 1,
+                explanation: "King compares the Declaration of Independence and Constitution to a promissory note, stating America has given Black people 'a bad check'."
+            },
+            {
+                question: "Which rhetorical device is heavily used in the phrase 'I have a dream... I have a dream...'",
+                options: [
+                    "Hyperbole",
+                    "Anaphora",
+                    "Onomatopoeia",
+                    "Oxymoron"
+                ],
+                correct: 1,
+                explanation: "Anaphora is the deliberate repetition of a phrase at the beginning of successive clauses or sentences."
+            },
+            {
+                question: "What does the phrase 'Five score years ago' refer to?",
+                options: [
+                    "100 years since the Emancipation Proclamation",
+                    "50 years since World War I",
+                    "200 years since American Independence",
+                    "20 years since the Montgomery Boycott"
+                ],
+                correct: 0,
+                explanation: "A 'score' is 20 years. Five score years equals 100 years, referencing Abraham Lincoln's 1863 Emancipation Proclamation."
+            },
+            {
+                question: "What non-violent stance does Dr. King emphasize regarding the struggle?",
+                options: [
+                    "Using physical retaliation if attacked",
+                    "Conducting the struggle on the high plane of dignity and discipline",
+                    "Rejecting any cooperation with white allies",
+                    "Waiting patiently for gradual political change"
+                ],
+                correct: 1,
+                explanation: "King explicitly urged protesters not to let creative protest degenerate into physical violence, retaining the high plane of dignity."
+            }
+        ];
+
+        let currentSlideIndex = 0;
+        let isNotesVisible = false;
+        let isSpeechPlaying = false;
+        let synth = window.speechSynthesis;
+        let currentUtterance = null;
+
+        // Quiz State
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let selectedQuizOption = null;
+
+        // Initialize presentation on DOM load
+        window.onload = function() {
+            renderSlide(currentSlideIndex);
+            buildGridModal();
+            initTouchEvents();
+        };
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            const slideContentEl = document.getElementById('slideContent');
+
+            // Fade out transition
+            slideContentEl.classList.add('opacity-0', 'scale-95');
+
+            setTimeout(() => {
+                slideContentEl.innerHTML = `
+                    <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-bookmark text-amber-500"></i> ${slide.category}
+                        </span>
+                        <span class="text-xs text-slate-400 font-semibold">Slide ${slide.id} of ${slides.length}</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="text-xl sm:text-3xl font-cinzel font-bold text-white leading-snug">${slide.title}</h2>
+                        <p class="text-xs sm:text-sm text-amber-400/90 font-medium">${slide.subtitle}</p>
+                    </div>
+
+                    <div class="flex-grow my-auto">
+                        ${slide.content}
+                    </div>
+                `;
+
+                // Update Teacher Notes
+                document.getElementById('teacherNotesContent').innerText = slide.teacherNotes;
+
+                // Update Slide Counter & Progress
+                document.getElementById('slideCounter').innerText = `${String(slide.id).padStart(2, '0')} / ${slides.length}`;
+                const progressPercent = (slide.id / slides.length) * 100;
+                document.getElementById('progressBar').style.width = `${progressPercent}%`;
+
+                // Navigation button states
+                document.getElementById('prevBtn').disabled = (index === 0);
+                document.getElementById('nextBtn').innerHTML = (index === slides.length - 1) 
+                    ? `<span>Finish Deck</span> <i class="fa-solid fa-flag-checkered"></i>`
+                    : `<span>Next</span> <i class="fa-solid fa-chevron-right"></i>`;
+
+                // Stop speech if playing
+                if (isSpeechPlaying) {
+                    stopSpeech();
+                }
+
+                // Fade back in
+                slideContentEl.classList.remove('opacity-0', 'scale-95');
+            }, 150);
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                renderSlide(currentSlideIndex);
+            } else {
+                toggleGridModal();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlideIndex = index;
+            renderSlide(currentSlideIndex);
+            toggleGridModal(false);
+        }
+
+        function toggleNotes() {
+            const panel = document.getElementById('teacherNotesPanel');
+            isNotesVisible = !isNotesVisible;
+            if (isNotesVisible) {
+                panel.classList.remove('hidden');
+            } else {
+                panel.classList.add('hidden');
+            }
+        }
+
+        function toggleGridModal(forceState) {
+            const modal = document.getElementById('gridModal');
+            if (typeof forceState === 'boolean') {
+                if (forceState) modal.classList.remove('hidden');
+                else modal.classList.add('hidden');
+            } else {
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        function buildGridModal() {
+            const container = document.getElementById('gridContainer');
+            container.innerHTML = '';
+            slides.forEach((slide, idx) => {
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-xl border text-left cursor-pointer transition hover:scale-105 ${
+                    idx === currentSlideIndex 
+                        ? 'bg-amber-500/20 border-amber-500 text-white' 
+                        : 'bg-slate-800/80 border-slate-700 text-slate-300 hover:border-amber-400'
+                }`;
+                card.onclick = () => goToSlide(idx);
+                card.innerHTML = `
+                    <span class="text-[10px] font-bold text-amber-400 block mb-1">SLIDE ${slide.id}</span>
+                    <h5 class="font-bold text-xs line-clamp-1">${slide.title}</h5>
+                    <p class="text-[10px] text-slate-400 line-clamp-2 mt-1">${slide.subtitle}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleSpeech() {
+            if (isSpeechPlaying) {
+                stopSpeech();
+            } else {
+                const quoteText = slides[currentSlideIndex].speechQuote;
+                if (!quoteText) return;
+
+                if ('speechSynthesis' in window) {
+                    currentUtterance = new SpeechSynthesisUtterance(quoteText);
+                    currentUtterance.rate = 0.9;
+                    currentUtterance.pitch = 1.0;
+                    
+                    currentUtterance.onend = function() {
+                        stopSpeech();
+                    };
+
+                    currentUtterance.onerror = function() {
+                        stopSpeech();
+                    };
+
+                    synth.speak(currentUtterance);
+                    isSpeechPlaying = true;
+                    document.getElementById('speechIcon').className = 'fa-solid fa-square text-red-400';
+                    document.getElementById('speechText').innerText = 'Stop Audio';
+                } else {
+                    alert('Speech synthesis is not supported on this browser.');
+                }
+            }
+        }
+
+        function stopSpeech() {
+            if (synth) {
+                synth.cancel();
+            }
+            isSpeechPlaying = false;
+            document.getElementById('speechIcon').className = 'fa-solid fa-volume-high text-amber-400';
+            document.getElementById('speechText').innerText = 'Listen Key Quote';
+        }
+
+        function toggleQuizModal() {
+            const modal = document.getElementById('quizModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                currentQuizIndex = 0;
+                quizScore = 0;
+                renderQuizQuestion();
+            }
+        }
+
+        function renderQuizQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            const quizBody = document.getElementById('quizBody');
+            selectedQuizOption = null;
+
+            document.getElementById('quizScoreTracker').innerText = `Question ${currentQuizIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById('quizNextBtn').innerText = (currentQuizIndex === quizQuestions.length - 1) ? 'See Results' : 'Next Question';
+
+            let optionsHTML = '';
+            q.options.forEach((opt, idx) => {
+                optionsHTML += `
+                    <button onclick="selectQuizOption(${idx})" id="quizOpt-${idx}" class="w-full text-left p-3 rounded-lg bg-slate-800 border border-slate-700 hover:border-amber-500/50 text-xs text-slate-200 transition flex items-center gap-3">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold text-slate-400">${String.fromCharCode(65 + idx)}</span>
+                        <span>${opt}</span>
+                    </button>
+                `;
+            });
+
+            quizBody.innerHTML = `
+                <h4 class="font-bold text-sm text-white leading-relaxed">${q.question}</h4>
+                <div class="space-y-2 pt-1">
+                    ${optionsHTML}
+                </div>
+                <div id="quizFeedback" class="hidden p-3 rounded-lg text-xs leading-relaxed mt-2"></div>
+            `;
+        }
+
+        function selectQuizOption(optIndex) {
+            if (selectedQuizOption !== null) return; // Prevent multiple clicks
+            selectedQuizOption = optIndex;
+
+            const q = quizQuestions[currentQuizIndex];
+            const feedbackEl = document.getElementById('quizFeedback');
+            const selectedBtn = document.getElementById(`quizOpt-${optIndex}`);
+            const correctBtn = document.getElementById(`quizOpt-${q.correct}`);
+
+            if (optIndex === q.correct) {
+                quizScore++;
+                selectedBtn.classList.add('bg-emerald-950', 'border-emerald-500', 'text-emerald-200');
+                feedbackEl.className = 'p-3 rounded-lg text-xs leading-relaxed mt-2 bg-emerald-500/20 border border-emerald-500/40 text-emerald-300';
+                feedbackEl.innerHTML = `<strong class="font-bold"><i class="fa-solid fa-circle-check"></i> Correct!</strong> ${q.explanation}`;
+            } else {
+                selectedBtn.classList.add('bg-red-950', 'border-red-500', 'text-red-200');
+                correctBtn.classList.add('bg-emerald-950', 'border-emerald-500', 'text-emerald-200');
+                feedbackEl.className = 'p-3 rounded-lg text-xs leading-relaxed mt-2 bg-red-500/20 border border-red-500/40 text-red-300';
+                feedbackEl.innerHTML = `<strong class="font-bold"><i class="fa-solid fa-circle-xmark"></i> Incorrect.</strong> ${q.explanation}`;
+            }
+            feedbackEl.classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            } else {
+                // Show final score
+                const quizBody = document.getElementById('quizBody');
+                quizBody.innerHTML = `
+                    <div class="text-center py-6 space-y-3">
+                        <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-3xl mx-auto border border-amber-500/30">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h4 class="font-cinzel text-xl font-bold text-white">Quiz Completed!</h4>
+                        <p class="text-sm text-slate-300">
+                            You scored <strong class="text-amber-400">${quizScore}</strong> out of <strong class="text-white">${quizQuestions.length}</strong>
+                        </p>
+                        <p class="text-xs text-slate-400 max-w-md mx-auto">
+                            ${quizScore >= 4 ? 'Excellent understanding of the speech text and rhetorical devices!' : 'Good effort! Review the slides and try again to improve your score.'}
+                        </p>
+                    </div>
+                `;
+                document.getElementById('quizNextBtn').innerText = 'Restart Quiz';
+                document.getElementById('quizNextBtn').onclick = function() {
+                    currentQuizIndex = 0;
+                    quizScore = 0;
+                    document.getElementById('quizNextBtn').onclick = nextQuizQuestion;
+                    renderQuizQuestion();
+                };
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === 'Space') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key.toLowerCase() === 'n') {
+                toggleNotes();
+            } else if (e.key.toLowerCase() === 'g') {
+                toggleGridModal();
+            }
+        });
+
+        // Touch Swipe Gestures
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function initTouchEvents() {
+            const viewport = document.getElementById('slideViewport');
+            viewport.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+
+            viewport.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+        }
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) {
+                nextSlide(); // Swipe left -> Next
+            }
+            if (touchEndX > touchStartX + swipeThreshold) {
+                prevSlide(); // Swipe right -> Previous
+            }
+        }
+    </script>
+</body>
+</html>
