@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Email Writing — ENG-SEC-1-1</title>
+<style>
+  :root{
+    --claret: #6e1423;
+    --claret-deep: #4a0e18;
+    --paper: #f4ede4;
+    --ink: #201a17;
+    --ink-muted: #5c5148;
+    --rule: #a6182b;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:#111;
+    font-family: Cambria, Georgia, 'Times New Roman', serif;
+    color:var(--ink);
+    overflow:hidden;
+  }
+  .deck{
+    position:relative; width:100vw; height:100vh;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .slide{
+    position:absolute; inset:0;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    padding: 8vh 10vw;
+    background: var(--paper);
+  }
+  .slide.active{ display:flex; }
+  .slide.ground{
+    background: linear-gradient(160deg, var(--claret) 0%, var(--claret-deep) 100%);
+    color: #f4ede4;
+  }
+  .kicker{
+    font-family: Calibri, Arial, sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: var(--rule);
+    margin-bottom: 0.6em;
+  }
+  .ground .kicker{ color:#e3b7bd; }
+  .rule{
+    width: 64px; height: 4px; background: var(--rule);
+    margin: 0.4em 0 1em 0;
+  }
+  .ground .rule{ background:#e3b7bd; }
+  h1{
+    font-size: 2.6rem; font-weight: 400; margin: 0 0 0.2em 0;
+    line-height:1.15;
+  }
+  h2{
+    font-size: 2rem; font-weight:400; margin:0 0 0.3em 0;
+  }
+  .subtitle{
+    font-size:1.2rem; font-style:italic; color:var(--ink-muted); max-width:60ch;
+  }
+  .ground .subtitle{ color:#e9d8da; }
+  .meta{ margin-top:2.2em; font-size:1rem; color:var(--ink-muted); }
+  .ground .meta{ color:#dcbec1; }
+  .meta div{ margin-bottom:0.2em; }
+
+  .numeral{
+    font-size:1rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:#e3b7bd; margin-bottom:0.3em;
+  }
+
+  p.body-text{
+    font-size:1.35rem; line-height:1.55; max-width:70ch; margin:0.4em 0;
+    color:var(--ink);
+  }
+  ul.dashlist{
+    list-style:none; margin:0.6em 0 0 0; padding:0; max-width:70ch;
+  }
+  ul.dashlist li{
+    font-size:1.25rem; line-height:1.5; margin:0.5em 0; padding-left:1.4em;
+    position:relative;
+  }
+  ul.dashlist li::before{
+    content:"—"; position:absolute; left:0; color:var(--rule);
+  }
+  .subhead{
+    font-family: Calibri, Arial, sans-serif;
+    letter-spacing:0.12em; text-transform:uppercase; font-size:0.95rem;
+    color:var(--claret); margin:1em 0 0.2em 0; font-weight:bold;
+  }
+
+  .statement-text{
+    font-size:2.1rem; line-height:1.4; max-width:22ch; color:#f4ede4;
+  }
+
+  .columns{ display:flex; gap:4em; max-width:90ch; }
+  .col{ flex:1; }
+  .col .subhead{ color: var(--claret); }
+
+  .foot{
+    position:absolute; bottom: 3vh; left:10vw; right:10vw;
+    display:flex; justify-content:space-between;
+    font-family: Calibri, Arial, sans-serif;
+    font-size:0.75rem; letter-spacing:0.05em; color:var(--ink-muted);
+  }
+  .ground .foot{ color:#dcbec1; }
+  .credit{ font-style:italic; }
+
+  .nav-dots{
+    position:fixed; bottom:1.2vh; left:50%; transform:translateX(-50%);
+    display:flex; gap:8px; z-index:20;
+  }
+  .dot{
+    width:8px; height:8px; border-radius:50%;
+    background:rgba(255,255,255,0.35);
+    cursor:pointer;
+  }
+  .dot.on{ background:#e3b7bd; }
+
+  .fullscreen-btn{
+    position:fixed; top:16px; right:20px; z-index:30;
+    font-family: Calibri, Arial, sans-serif;
+    font-size:0.8rem; letter-spacing:0.05em;
+    background:rgba(0,0,0,0.55); color:#f4ede4;
+    border:1px solid rgba(244,237,228,0.4);
+    padding:6px 12px; border-radius:4px; cursor:pointer;
+  }
+  .fullscreen-btn:hover{ background:rgba(0,0,0,0.75); }
+
+  .arrow{
+    position:fixed; top:50%; transform:translateY(-50%);
+    font-size:2rem; color:rgba(244,237,228,0.5); cursor:pointer;
+    z-index:20; user-select:none; padding: 0 12px;
+  }
+  .arrow:hover{ color:#f4ede4; }
+  #prev{ left:6px; } #next{ right:6px; }
+</style>
+</head>
+<body>
+
+<button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+<div id="prev" class="arrow" onclick="go(-1)">&#10094;</div>
+<div id="next" class="arrow" onclick="go(1)">&#10095;</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1. TITLE -->
+  <section class="slide ground active">
+    <div class="kicker">ENG-SEC-1-1 · BUSINESS WRITING</div>
+    <div class="rule"></div>
+    <h1>Email Writing</h1>
+    <div class="subtitle">Composing professional and academic e-correspondence</div>
+    <div class="meta">
+      <div>Department of English</div>
+      <div>Rani Birla Girls' College</div>
+      <div>Semester 1 · Skill Enhancement Course</div>
+    </div>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 2. STATEMENT -->
+  <section class="slide ground">
+    <div class="kicker">The Argument</div>
+    <div class="rule"></div>
+    <div class="statement-text">An email is a professional document, not a text message.</div>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 3. SECTION -->
+  <section class="slide ground">
+    <div class="numeral">PART ONE</div>
+    <div class="rule"></div>
+    <h2>The anatomy of a formal email</h2>
+    <p class="subtitle">Subject line, salutation, body, and sign-off.</p>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 4. THE SUBJECT LINE -->
+  <section class="slide">
+    <div class="kicker">Anatomy · 1</div>
+    <div class="rule"></div>
+    <h2>The subject line</h2>
+    <ul class="dashlist">
+      <li>The first thing read — often the only thing read before a decision is made to open the mail.</li>
+      <li>Must be specific, not vague: <em>"Leave Application — 3–15 August 2026"</em>, not <em>"Leave"</em>.</li>
+      <li>Never left blank. A blank subject line reads as careless or, worse, suspicious.</li>
+      <li>Kept short enough to display in full in an inbox preview — under ten words is a safe rule of thumb.</li>
+    </ul>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 5. SALUTATION AND REGISTER -->
+  <section class="slide">
+    <div class="kicker">Anatomy · 2</div>
+    <div class="rule"></div>
+    <h2>Salutation and register</h2>
+    <div class="subhead">Formal salutations</div>
+    <p class="body-text">"Dear Dr. Sharma," "Respected Madam," "Dear Sir/Madam," when the recipient's name is not known.</p>
+    <div class="subhead">Register</div>
+    <p class="body-text">No contractions ("cannot", not "can't"). No emoji, no exclamation marks used for emphasis. Courtesy words — "kindly", "please", "I would be grateful" — carry the tone that punctuation cannot.</p>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 6. BODY STRUCTURE -->
+  <section class="slide">
+    <div class="kicker">Anatomy · 3</div>
+    <div class="rule"></div>
+    <h2>The body: three movements</h2>
+    <ul class="dashlist">
+      <li>(text, 2) OPENING — state the purpose in the first line. Do not bury it.</li>
+      <li>(text, 2) DEVELOPMENT — one idea per paragraph; supporting detail, dates, attachments referenced here.</li>
+      <li>(text, 2) CLOSING — the action requested, and by when.</li>
+      <li>Paragraphs stay short: three to five lines is the working limit for a screen-read document.</li>
+    </ul>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 7. SIGN-OFF -->
+  <section class="slide">
+    <div class="kicker">Anatomy · 4</div>
+    <div class="rule"></div>
+    <h2>Sign-off and signature block</h2>
+    <p class="body-text">"Yours sincerely," or "Regards," followed by full name, designation, and institutional affiliation — never the first name alone in a formal register.</p>
+    <ul class="dashlist">
+      <li>A signature block is not decoration; it is how the recipient verifies who is writing and in what capacity.</li>
+      <li>Contact details (phone, alternate email) belong here, not in the body.</li>
+    </ul>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 8. SECTION 2 -->
+  <section class="slide ground">
+    <div class="numeral">PART TWO</div>
+    <div class="rule"></div>
+    <h2>Register, purpose, and practice</h2>
+    <p class="subtitle">Formal against informal; the common types of professional email.</p>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 9. TWO COLUMN: FORMAL VS INFORMAL -->
+  <section class="slide">
+    <div class="kicker">Comparison</div>
+    <div class="rule"></div>
+    <h2>Formal email vs. informal message</h2>
+    <div class="columns">
+      <div class="col">
+        <div class="subhead">Formal Email</div>
+        <p class="body-text">Full sentences. "I am writing to inform you..." Proofread before sending. Reply expected within a working day.</p>
+      </div>
+      <div class="col">
+        <div class="subhead">Informal Message</div>
+        <p class="body-text">Fragments and abbreviations. "Hey, quick q—" Sent and forgotten. Reply expected within minutes.</p>
+      </div>
+    </div>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 10. COMMON TYPES -->
+  <section class="slide">
+    <div class="kicker">Practice</div>
+    <div class="rule"></div>
+    <h2>Common types of professional email</h2>
+    <ul class="dashlist">
+      <li>The request — leave application, permission, extension of deadline.</li>
+      <li>The inquiry — asking for information not otherwise available.</li>
+      <li>The complaint — factual, unemotional, evidence-led.</li>
+      <li>The follow-up — polite, brief, references the original mail by date.</li>
+      <li>The cover email — accompanies an attached document (CV, report, assignment).</li>
+    </ul>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 11. ETIQUETTE -->
+  <section class="slide">
+    <div class="kicker">Practice</div>
+    <div class="rule"></div>
+    <h2>Netiquette: CC, BCC, and tone</h2>
+    <ul class="dashlist">
+      <li>CC (carbon copy) — visible to all; used when a party needs to be informed, not acted upon.</li>
+      <li>BCC (blind carbon copy) — invisible to other recipients; used for mass mail or discretion.</li>
+      <li>Reply-all is used only when every recipient genuinely needs the reply.</li>
+      <li>Proofread before sending — an email cannot be unsent, and an error in it is a permanent record.</li>
+    </ul>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+  <!-- 12. CLOSING -->
+  <section class="slide ground">
+    <div class="kicker">Where We Have Got To</div>
+    <div class="rule"></div>
+    <h1>Thank You</h1>
+    <div class="meta">
+      <div>Ritwik Balo</div>
+      <div>Department of English, Rani Birla Girls' College</div>
+      <div>ENG-SEC-1-1 · Business Writing</div>
+    </div>
+    <div class="foot"><span>ENG-SEC-1-1 · Business Writing</span><span class="credit">Created by Ritwik Balo</span></div>
+  </section>
+
+</div>
+
+<div class="nav-dots" id="dots"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let idx = 0;
+  const dotsWrap = document.getElementById('dots');
+  slides.forEach((s,i)=>{
+    const d = document.createElement('div');
+    d.className='dot'+(i===0?' on':'');
+    d.onclick=()=>{ idx=i; render(); };
+    dotsWrap.appendChild(d);
+  });
+  function render(){
+    slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
+    document.querySelectorAll('.dot').forEach((d,i)=> d.classList.toggle('on', i===idx));
+  }
+  function go(dir){
+    idx = (idx + dir + slides.length) % slides.length;
+    render();
+  }
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='ArrowRight' || e.key===' ') go(1);
+    if(e.key==='ArrowLeft') go(-1);
+  });
+  function toggleFullscreen(){
+    if(!document.fullscreenElement){
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+</script>
+
+</body>
+</html>
